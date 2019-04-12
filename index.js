@@ -22,7 +22,7 @@ class Main {
             <use xlink:href="#iconqiang"></use>
           </svg>`
         } else if(map[i][j] === 'floor') {
-          template = 'floor'
+          template = 'f'
         } else if(map[i][j] === 'target') {
           template = ` 
           <svg class="icon" aria-hidden="true">

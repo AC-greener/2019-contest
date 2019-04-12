@@ -2,10 +2,9 @@
 class HandleKeyBoard {
   constructor(map) {
     this.map = map
-    this.boyPostion = this.getBoyPostion(this.map)   //boy当前所在的位置
-    this.inTarget = false
-    this.boxInTarget = false
-    this.target = []
+    this.realMap = JSON.parse(JSON.stringify(map))
+    this.boyCurrent = this.getBoyCurrent(this.realMap)   //boy当前所在的坐标
+    this.from = 'floor'
   }
   keydown(e) {
     let keyCode = e.keyCode
@@ -26,82 +25,91 @@ class HandleKeyBoard {
   }
 
   handleMove(y, x) {
-    this.judge(y, x)
+    if(this.judge(y, x)) {
+      console.log('可以走')
+      let boyNext = [y + this.boyCurrent[0], x + this.boyCurrent[1]]
+      if(this.map[boyNext[0]][boyNext[1]] === 'floor') {
+        this.realMap[this.boyCurrent[0]][this.boyCurrent[1]] = 'floor'
+        this.realMap[boyNext[0]][boyNext[1]] = 'boy'
+        this.boyCurrent = [boyNext[0], boyNext[1]]
+        main.render(this.realMap)
+      }
+    }
   }
 
   judge(y, x) {
-    let nextX = x + this.boyPostion[1], nextY = y + this.boyPostion[0]
-    let destination = this.map[nextY][nextX]
-    console.log('目的地：', destination)
-   
-    if(destination === 'box') {   //要走的下一步遇到箱子
-      let boxPostion = this.map[nextY + y][nextX + x]
-      // console.log(nextY + y, nextX + x)
-      if(boxPostion === 'box' || boxPostion === 'wall') {
-        console.log('箱子旁边不可以走！！')
+    let nextX = x + this.boyCurrent[1], nextY = y + this.boyCurrent[0]
+    let boyNext = this.realMap[nextY][nextX]
+    if(boyNext === 'box') {   //要走的下一步遇到箱子
+      let boxNext = this.realMap[nextY + y][nextX + x]
+      if(boxNext === 'box' || boxNext === 'wall') {
         return false
-      } else if(boxPostion === 'floor') {
-        this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'   //吧boy所在的位置变成地板
-        this.boyPostion = [nextY, nextX]        //更新boy位置
-        this.map[nextY + y][nextX + x] = 'box'  //更新box位置
-        this.map[nextY][nextX] = 'boy'
-        console.log('箱子旁边可以走！！')
-        main.render(this.map)
+      } else if(boxNext === 'floor') {
         return true
-      } else if(boxPostion === 'target') {
-        this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'   //吧boy所在的位置变成地板
-        if(this.boxInTarget) {
-          this.inTarget = true
-            this.map[this.boyPostion[0]][this.boyPostion[1]] = 'target'  
-        }
-        this.boyPostion = [nextY, nextX]        //更新boy位置
-        this.map[nextY + y][nextX + x] = 'box'  //更新box位置
-        this.map[nextY][nextX] = 'boy'
-        this.boxInTarget = true
-        this.target = [nextY + y, nextX + x]
-        console.log('target', this.target)
-        main.render(this.map)
+      } else if(boxNext === 'target') {
         return true
       }
-    } else if(destination === 'wall') {  //要走的下一步遇到墙
-      console.log('有墙，走不动！！')
+    } else if(boyNext === 'wall') {  //要走的下一步遇到墙
       return false
-    } else if(destination === 'floor') {  //要走的下一步是地板
-      this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'
-      this.boyPostion = [nextY, nextX]
-      // console.log(this.boyPostion[1], this.boyPostion[0])
-      this.map[nextY][nextX] = 'boy'   //移动boy
-      console.log('nextY nextX', nextY, nextX)
-      if(this.inTarget) {
-        this.map[this.target[0]][this.target[1]] = 'target' 
-        this.inTarget = false
-        console.log('target',this.target) 
-      } 
-      main.render(this.map)
-      // console.log('是地板，可以走！！')
+    } else if(boyNext === 'floor') {  //要走的下一步是地板
       return true
-    } else if(destination === 'target') {
-      this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'
-      this.boyPostion = [nextY, nextX]
-      this.map[nextY][nextX] = 'boy'  
-      if(this.inTarget && this.map[this.target[0]][this.target[1]] != 'box') {
-        this.map[this.target[0]][this.target[1]] = 'target' 
-        console.log('target',this.target) 
-      } 
-      
-      this.inTarget = true
-      this.target = [nextY, nextX]
-      main.render(this.map)
+    } else if(boyNext === 'target') {
+     return true
     }
    
   }
-  getBoyPostion(map) {
-    for(let y = 0; y < map.length; y++) {
-      for(let x = 0; x < map[y].length; x++) {
-        if(map[y][x] === 'boy') {
+  getBoyCurrent(realMap) {
+    for(let y = 0; y < realMap.length; y++) {
+      for(let x = 0; x < realMap[y].length; x++) {
+        if(realMap[y][x] === 'boy') {
           return [y, x]
         }
       }
     }
+  }
+  judge2(y, x) {
+    let nextX = x + this.boyCurrent[1], nextY = y + this.boyCurrent[0]
+    let boyNext = this.realMap[nextY][nextX]
+    console.log('目的地：', boyNext)
+   
+    if(boyNext === 'box') {   //要走的下一步遇到箱子
+      let boxCurrent = this.realMap[nextY + y][nextX + x]
+      if(boxCurrent === 'box' || boxCurrent === 'wall') {
+        return false
+      } else if(boxCurrent === 'floor') {
+        this.realMap[this.boyCurrent[0]][this.boyCurrent[1]] = 'floor'   //吧boy所在的位置变成地板
+        this.boyCurrent = [nextY, nextX]        //更新boy位置
+        this.realMap[nextY + y][nextX + x] = 'box'  //更新box位置
+        this.realMap[nextY][nextX] = 'boy'
+        console.log('箱子旁边可以走！！')
+        main.render(this.realMap)
+        return true
+      } else if(boxCurrent === 'target') {
+        this.realMap[this.boyCurrent[0]][this.boyCurrent[1]] = 'floor'   //吧boy所在的位置变成地板
+        this.boyCurrent = [nextY, nextX]        //更新boy位置
+        this.realMap[nextY + y][nextX + x] = 'box'  //更新box位置
+        this.realMap[nextY][nextX] = 'boy'
+        main.render(this.realMap)
+        return true
+      }
+    } else if(boyNext === 'wall') {  //要走的下一步遇到墙
+      return false
+    } else if(boyNext === 'floor') {  //要走的下一步是地板
+      this.realMap[this.boyCurrent[0]][this.boyCurrent[1]] = 'floor'
+      this.boyCurrent = [nextY, nextX]
+      // console.log(this.boyCurrent[1], this.boyCurrent[0])
+      this.realMap[nextY][nextX] = 'boy'   //移动boy
+      main.render(this.realMap)
+      // console.log('是地板，可以走！！')
+      return true
+    } else if(boyNext === 'target') {
+      // if(this.map[])
+      this.realMap[this.boyCurrent[0]][this.boyCurrent[1]] = 'floor'
+      this.boyCurrent = [nextY, nextX]
+      this.realMap[nextY][nextX] = 'boy'  
+
+      main.render(this.realMap)
+    }
+   
   }
 }
