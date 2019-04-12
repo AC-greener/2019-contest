@@ -4,7 +4,7 @@ class Utils {
     let element = document.createElement(el)
     element.classList.add(className)
     if(content) {
-      element.textContent = content
+      element.innerHTML = content
     }
     return element
   }

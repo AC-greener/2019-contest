@@ -15,19 +15,31 @@ class Main {
     for(let i = 0; i < map.length; i++) {
       let row = this.utils.createElement('div', '', 'row')
       for(let j = 0; j < map[i].length; j++) {
-        let text = ''
+        let template
         if(map[i][j] === 'wall') {
-          text = 'wall'
+          template = ` 
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#iconqiang"></use>
+          </svg>`
         } else if(map[i][j] === 'floor') {
-          text = 'floor'
+          template = 'floor'
         } else if(map[i][j] === 'target') {
-          text = 'target'
+          template = ` 
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#iconmubiao"></use>
+          </svg>`
         } else if(map[i][j] === 'box') {
-          text = 'box'
+          template = ` 
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icongift"></use>
+          </svg>`
         } else if(map[i][j] === 'boy') {
-          text = 'boy'
+          template = ` 
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#iconhuaji"></use>
+            </svg>`
         }
-        let div = this.utils.createElement('div', text, 'item')
+        let div = this.utils.createElement('div', template, 'item')
         row.appendChild(div)
   
       }
