@@ -37,7 +37,7 @@ class HandleKeyBoard {
   judge(y, x) {
     let nextX = x + this.boyPostion[1], nextY = y + this.boyPostion[0]
     let destination = this.map[nextY][nextX]
-    console.log(destination)
+    console.log('目的地：', destination)
     if(destination === 'box') {   //要走的下一步遇到箱子
       let boxPostion = this.map[nextY + y][nextX + x]
       // console.log(nextY + y, nextX + x)
@@ -54,12 +54,12 @@ class HandleKeyBoard {
       console.log('有墙，走不动！！')
       return false
     } else if(destination === 'floor') {  //要走的下一步是地板
-      this.boyPostion = [nextY, nextX]
+      // this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'
+      // this.boyPostion = [nextY, nextX]
+      console.log(this.boyPostion[1], this.boyPostion[0])
       this.map[nextY][nextX] = 'boy'
-      console.log(this.map )
-      new Main(this.map)
-      console.log('是地板，可以走！！')
-      // new Main(this.map)
+      main.render(this.map)
+      // console.log('是地板，可以走！！')
       return true
     }   
   }

@@ -41,5 +41,5 @@ class Main {
   }
 }
 
-new Main(new Map().map[0])
+let main = new Main(new Map().map[0])
 
