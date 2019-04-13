@@ -1,159 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>game-推箱子</title>
-  <link rel="stylesheet" href="./style.css">
-  <script src="//at.alicdn.com/t/font_1136153_noe6zhvp3fe.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>game-推箱子</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="//at.alicdn.com/t/font_1136153_noe6zhvp3fe.js"></script>
 </head>
+
 <body>
-  <div id="app">
-    <div class="container">
-      <!-- <div class="row">
-        <div class="item">
-          
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#iconhuaji"></use>
-        </svg>
+
+    <div id="app">
+        <div class="chooseLevel">
+            <div>当前关卡 : <span id="currentLevel"> 1</span></div>
+            <div>
+                <label for="level">选择关卡：</label>
+                <select id="level">
+                    <option value="0">第1关</option>
+                    <option value="1">第2关</option>
+                    <option value="2">第3关</option>
+                    <option value="3">第4关</option>
+                    <option value="4">第5关</option>
+                    <option value="5">第6关</option>
+                </select>
+            </div>
         </div>
-        <div class="item">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#iconmubiao"></use>
-            </svg>
+        <div class="container">
         </div>
-        <div class="item">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#iconhuaji"></use>
-            </svg>
-        </div>
-        <div class="item">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#iconqiang"></use>
-            </svg>
-        </div>
-       
-        <div class="item">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#iconicon-test"></use>
-            </svg>
-        </div>
-        <div class="item">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icondangao"></use>
-            </svg>
-        </div>
-        <div class="item">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icongift"></use>
-            </svg>
-        </div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-      </div>
-      <div class="row">
-        <div class="item"> <svg class="icon" aria-hidden="true">
-            <use xlink:href="#iconqiang"></use>
-        </svg></div>
-        <div class="item"> <svg class="icon" aria-hidden="true">
-            <use xlink:href="#iconqiang"></use>
-        </svg></div>
-        <div class="item"> <svg class="icon" aria-hidden="true">
-            <use xlink:href="#iconqiang"></use>
-        </svg></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-      </div>
-      <div class="row">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-      </div>
-      <div class="row">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-      </div>
-      <div class="row">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-      </div>
-      <div class="row">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-      </div>
-      <div class="row">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-      </div>
-      <div class="row">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-      </div> -->
     </div>
-  </div>
-  <script src="./Utils.js"></script>
-  <script src="./Map.js"></script>
-  <script src="./HandleKeyBoard.js"></script>
-  <script src="./index.js"></script>
-  <script>
-    let template = `
-    
-    
-    `
-  </script>
+        <script src="./Utils.js"></script>
+        <script src="./Map.js"></script>
+        <script src="./HandleKeyBoard.js"></script>
+        <script src="./index.js"></script>
 </body>
+
 </html>

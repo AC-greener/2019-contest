@@ -11,4 +11,8 @@ class Utils {
     }
     return element
   }
+  bindEvents(map) {
+    let handleKeyBoard = new HandleKeyBoard(map)
+    document.body.addEventListener('keydown', handleKeyBoard.keydown.bind(handleKeyBoard));
+  }
 }

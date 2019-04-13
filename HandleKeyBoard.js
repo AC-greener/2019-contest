@@ -10,6 +10,7 @@ class HandleKeyBoard {
     this.boxInTarget = false
     this.target = []
     this.resultList = this.findResultList(this.map) //目标点的坐标
+    this.bindChoose()
   }
   keydown(e) {
     let keyCode = e.keyCode
@@ -32,7 +33,6 @@ class HandleKeyBoard {
   handleMove(y, x) {
     this.judge(y, x)
     this.judgeSuccess(this.map)
-
   }
 
   judge(y, x) {
@@ -130,11 +130,23 @@ class HandleKeyBoard {
     }
     if (flag) {
       let timer = setTimeout(() => {
-        var okay = confirm('恭喜您, 通关啦！');
-        if (okay) {
-          this.nextLevel(++this.level)
+        var okay
+
+        if (this.level < 5) {
+          okay = confirm('恭喜您, 过关啦！');
+          if (okay) {
+            this.nextLevel(++this.level)
+          }
+        } else {
+          okay = confirm('恭喜您, 闯关成功！ 再玩一次吧？');
+          if (okay) {
+            this.level = 0
+            this.nextLevel(this.level)
+          }
         }
-        
+
+
+
         clearTimeout(timer)
       }, 5)
     }
@@ -145,5 +157,19 @@ class HandleKeyBoard {
     this.boyPostion = this.getBoyPostion(this.map)
     this.resultList = this.findResultList(this.map)
     main.render(this.map)
+    this.renderCurrentLevel()
+
   }
+  bindChoose() {
+    let levelSelect = document.querySelector('#level')
+    levelSelect.onchange = (e) => {
+      this.level = parseInt(e.target.value)
+      this.nextLevel(this.level)
+    }
+  }
+  renderCurrentLevel() {
+    let currentLevel = document.querySelector('#currentLevel')
+    currentLevel.innerHTML = this.level + 1
+  }
+
 }

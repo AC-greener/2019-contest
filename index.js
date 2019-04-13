@@ -2,32 +2,18 @@
 class Main {
   constructor() {
     this.map = new Map().map
-    this.utils = new Utils()
+    this.utils = new Utils()    //初始化工具类
     this.container = document.querySelector('.container')
     this.app = document.querySelector('#app')
-    this.render(this.map[0])
-    this.bindEvents(this.map)
+    this.render(this.map[0])   //渲染地图
+    this.utils.bindEvents(this.map)  //监听事件
   }
   render(map) {
-    let element = this.container
-    while (element.firstChild) {
-      element.removeChild(element.firstChild);
-    }
+    this.clearElement(this.container)
     for(let i = 0; i < map.length; i++) {
       let row = this.utils.createElement('div', '', 'row')
       for(let j = 0; j < map[i].length; j++) {
-        let template
-        if(map[i][j] === 'wall') {
-          template = '#iconqiang'
-        } else if(map[i][j] === 'floor') {
-          template = ''
-        } else if(map[i][j] === 'target') {
-          template = '#iconmubiao'
-        } else if(map[i][j] === 'box') {
-          template = '#icongift'
-        } else if(map[i][j] === 'boy') {
-          template = '#iconhuaji'
-        }
+        let template = this.createTemplate(map[i][j])
         let div = this.utils.createElement('div', template, 'item')
         row.appendChild(div)
       }
@@ -35,11 +21,26 @@ class Main {
     }
     this.app.appendChild(this.container)
   }
-  bindEvents(map) {
-    let handleKeyBoard = new HandleKeyBoard(map)
-    document.body.addEventListener('keydown', handleKeyBoard.keydown.bind(handleKeyBoard));
-
+  clearElement(element) {
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
   }
-
+  createTemplate(data) {
+    let template
+    if(data === 'wall') {
+      template = '#iconqiang'
+    } else if(data === 'floor') {
+      template = ''
+    } else if(data === 'target') {
+      template = '#iconmubiao'
+    } else if(data === 'box') {
+      template = '#icongift'
+    } else if(data === 'boy') {
+      template = '#iconhuaji'
+    }
+    return template
+  }
+ 
 }
 let main = new Main()

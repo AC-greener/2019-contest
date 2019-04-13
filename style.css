@@ -11,15 +11,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column
 }
-#app>.container {
-  /* width: 400px;
-  height: 400px; */
-  /* border: 1px solid red; */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* flex-wrap: wrap; */
+#app>.chooseLevel {
+  margin: 30px;
+}
+#app>.chooseLevel #level {
+  padding: 2px;
 }
 #app>.container>.row {
   display: flex;
@@ -30,5 +28,4 @@
   align-items: center;
   height: 40px;
   width: 40px;
-  /* border: 1px solid black */
 }
