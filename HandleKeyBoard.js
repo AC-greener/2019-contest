@@ -145,7 +145,7 @@ class HandleKeyBoard {
           }
         }
         clearTimeout(timer)
-      }, 5)
+      }, 10)
     }
   }
   nextLevel(level) {

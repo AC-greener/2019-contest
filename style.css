@@ -29,3 +29,12 @@
   height: 40px;
   width: 40px;
 }
+@media (max-width: 400px) {
+  .container>.row>.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    width: 32px;
+  }
+}
