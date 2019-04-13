@@ -1,13 +1,15 @@
 //处理键盘事件
 class HandleKeyBoard {
   constructor(map) {
-    this.m = map
-    this.map = JSON.parse(JSON.stringify(map))        //克隆一份地图,在这个地图上面操作
+    this.index = 0
+    this.allMap = map  //全部地图
+    this.m = map[0]   //当前关卡所在的地图
+    this.map = JSON.parse(JSON.stringify(this.m))        //克隆一份地图,在这个地图上面操作
     this.boyPostion = this.getBoyPostion(this.map)   //boy当前所在的位置
     this.inTarget = false
     this.boxInTarget = false
     this.target = []
-    this.resultList = this.findResultList(this.map)
+    this.resultList = this.findResultList(this.map)   //
   }
   keydown(e) {
     let keyCode = e.keyCode
@@ -29,12 +31,13 @@ class HandleKeyBoard {
 
   handleMove(y, x) {
     this.judge(y, x)
+    this.judgeSuccess(this.map)
+
   }
 
   judge(y, x) {
     let nextX = x + this.boyPostion[1], nextY = y + this.boyPostion[0]
     let destination = this.map[nextY][nextX]
-    console.log('目的地：', destination)
    
     if(destination === 'box') {   //要走的下一步遇到箱子
       let boxPostion = this.map[nextY + y][nextX + x]
@@ -61,9 +64,7 @@ class HandleKeyBoard {
         this.map[nextY][nextX] = 'boy'
         this.boxInTarget = true
         this.target = [nextY + y, nextX + x]
-      
         main.render(this.map)
-        this.judgeSuccess(this.map)
         return true
       }
     } else if(destination === 'wall') {  //要走的下一步遇到墙
@@ -78,12 +79,11 @@ class HandleKeyBoard {
       this.map[nextY][nextX] = 'boy'   //移动boy
      
       if(this.inTarget) {
-        this.map[this.target[0]][this.target[1]] = 'target' 
+        // this.map[this.target[0]][this.target[1]] = 'target' 
         this.inTarget = false
       }
      
       main.render(this.map)
-      this.judgeSuccess(this.map)
       // console.log('是地板，可以走！！')
       return true
     } else if(destination === 'target') {
@@ -95,13 +95,11 @@ class HandleKeyBoard {
       this.map[nextY][nextX] = 'boy'  
       if(this.inTarget && this.map[this.target[0]][this.target[1]] != 'box') {
         this.map[this.target[0]][this.target[1]] = 'target' 
-        console.log('target',this.target) 
       } 
       
       this.inTarget = true
       this.target = [nextY, nextX]
       main.render(this.map)
-      this.judgeSuccess(this.map)
     }
    
   }
@@ -128,13 +126,21 @@ class HandleKeyBoard {
   judgeSuccess(map) {
     let flag = true
     for(let i = 0; i < this.resultList.length; i++) {
-      console.log(map[this.resultList[i][0]][this.resultList[i][1]] )
       if(map[this.resultList[i][0]][this.resultList[i][1]] !== 'box') {
         flag = false
       }
     }
+    console.log(flag)
     if(flag) {
-      alert('通关啦！！！！')
+      let timer = setTimeout(() => {
+        console.log('通关啦！！！！')
+        this.m = this.allMap[++this.index]
+        this.map = JSON.parse(JSON.stringify(this.m))
+        this.boyPostion = this.getBoyPostion(this.map)
+        this.resultList = this.findResultList(this.map)
+        main.render(this.map)
+       
+      }, 0)
     }
   }
 }

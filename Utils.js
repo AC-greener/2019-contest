@@ -4,7 +4,10 @@ class Utils {
     let element = document.createElement(el)
     element.classList.add(className)
     if(content) {
-      element.innerHTML = content
+      element.innerHTML = ` 
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="${content}"></use>
+      </svg>`
     }
     return element
   }
