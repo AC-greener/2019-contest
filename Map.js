@@ -3,11 +3,11 @@ class Map {
   constructor() {
     this.map = [
       [
-        ['','','wall','wall','wall','','','',''],
-        ['wall','wall','wall','target','target','wall','','',''],
+        ['','wall','wall','wall','wall','wall','wall'],
+        ['','wall','wall','target','target','wall', 'wall'],
         ['','wall','boy','box','box','floor','wall','',''],
-        ['','wall','floor','floor','floor','floor','wall','',''],
-        ['','wall','wall','wall','wall','wall','wall','','']
+        ['','wall','floor','floor','floor','floor','wall'],
+        ['','wall','wall','wall','wall','wall','wall']
       ],
       [
         ['wall','wall','wall','wall','wall','wall','wall','wall'],

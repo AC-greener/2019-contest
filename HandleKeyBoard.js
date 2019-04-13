@@ -11,6 +11,7 @@ class HandleKeyBoard {
     this.target = []
     this.resultList = this.findResultList(this.map) //目标点的坐标
     this.bindChoose()
+    this.bindTouchEvent()
   }
   keydown(e) {
     let keyCode = e.keyCode
@@ -131,7 +132,6 @@ class HandleKeyBoard {
     if (flag) {
       let timer = setTimeout(() => {
         var okay
-
         if (this.level < 5) {
           okay = confirm('恭喜您, 过关啦！');
           if (okay) {
@@ -144,9 +144,6 @@ class HandleKeyBoard {
             this.nextLevel(this.level)
           }
         }
-
-
-
         clearTimeout(timer)
       }, 5)
     }
@@ -165,11 +162,36 @@ class HandleKeyBoard {
     levelSelect.onchange = (e) => {
       this.level = parseInt(e.target.value)
       this.nextLevel(this.level)
+      e.target.blur()   //让选择的元素失去焦点， 优化用户体验
     }
   }
   renderCurrentLevel() {
     let currentLevel = document.querySelector('#currentLevel')
     currentLevel.innerHTML = this.level + 1
   }
-
+  bindTouchEvent() {
+    let container =  document.querySelector('.container')
+    if(document.body.ontouchstart !== undefined) {
+      let startX, startY
+      container.addEventListener('touchstart', (e) => {
+        startX = e.changedTouches[0].pageX
+        startY = e.changedTouches[0].pageY
+      })
+      container.addEventListener('touchend', (e) => {
+        let endX = e.changedTouches[0].pageX
+        let endY = e.changedTouches[0].pageY
+        let distanceX = endX - startX
+        let distanceY = endY - startY
+        if(Math.abs(distanceX) > Math.abs(distanceY) && distanceX > 0) {
+          this.handleMove(0, 1)
+        }else if(Math.abs(distanceX) > Math.abs(distanceY) && distanceX < 0) {
+          this.handleMove(0, -1)
+        }else if(Math.abs(distanceX) < Math.abs(distanceY) && distanceY < 0) {
+          this.handleMove(-1, 0)
+        }else if(Math.abs(distanceX) < Math.abs(distanceY) && distanceY > 0) {
+          this.handleMove(1, 0)
+        }
+      })
+    }
+  }
 }

@@ -1,4 +1,4 @@
-//工具类，里面有一些辅助方法，如：创建元素.
+//工具类，里面有一些辅助方法，如：创建元素, 事件绑定.
 class Utils {
   createElement(el, content, className) {
     let element = document.createElement(el)
