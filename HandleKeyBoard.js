@@ -1,15 +1,15 @@
 //处理键盘事件
 class HandleKeyBoard {
   constructor(map) {
-    this.index = 0
-    this.allMap = map  //全部地图
-    this.m = map[0]   //当前关卡所在的地图
-    this.map = JSON.parse(JSON.stringify(this.m))        //克隆一份地图,在这个地图上面操作
-    this.boyPostion = this.getBoyPostion(this.map)   //boy当前所在的位置
+    this.level = 0 //当前关卡数
+    this.allMap = map //全部地图
+    this.m = map[0] //当前关卡所在的地图
+    this.map = JSON.parse(JSON.stringify(this.m)) //克隆一份地图,在这个地图上面操作
+    this.boyPostion = this.getBoyPostion(this.map) //boy当前所在的位置
     this.inTarget = false
     this.boxInTarget = false
     this.target = []
-    this.resultList = this.findResultList(this.map)   //
+    this.resultList = this.findResultList(this.map) //目标点的坐标
   }
   keydown(e) {
     let keyCode = e.keyCode
@@ -36,77 +36,75 @@ class HandleKeyBoard {
   }
 
   judge(y, x) {
-    let nextX = x + this.boyPostion[1], nextY = y + this.boyPostion[0]
+    let nextX = x + this.boyPostion[1],
+      nextY = y + this.boyPostion[0]
     let destination = this.map[nextY][nextX]
-   
-    if(destination === 'box') {   //要走的下一步遇到箱子
+
+    if (destination === 'box') { //要走的下一步遇到箱子
       let boxPostion = this.map[nextY + y][nextX + x]
-      // console.log(nextY + y, nextX + x)
-      if(boxPostion === 'box' || boxPostion === 'wall') {
+      if (boxPostion === 'box' || boxPostion === 'wall') {
         return false
-      } else if(boxPostion === 'floor') {
-        this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'   //吧boy所在的位置变成地板
-        this.boyPostion = [nextY, nextX]        //更新boy位置
-        this.map[nextY + y][nextX + x] = 'box'  //更新box位置
+      } else if (boxPostion === 'floor') {
+        this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor' //吧boy所在的位置变成地板
+        this.boyPostion = [nextY, nextX] //更新boy位置
+        this.map[nextY + y][nextX + x] = 'box' //更新box位置
         this.map[nextY][nextX] = 'boy'
         main.render(this.map)
         return true
-      } else if(boxPostion === 'target') {
-        this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'   //吧boy所在的位置变成地板
-        if(this.boxInTarget) {
-          this.map[this.boyPostion[0]][this.boyPostion[1]] = 'target'  
-        }
-         if(this.m[this.boyPostion[0]][this.boyPostion[1]] === 'floor' || this.m[this.boyPostion[0]][this.boyPostion[1]] === 'box') {
+      } else if (boxPostion === 'target') {
         this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'
-      } 
-        this.boyPostion = [nextY, nextX]        //更新boy位置
-        this.map[nextY + y][nextX + x] = 'box'  //更新box位置
+        if (this.boxInTarget) {
+          this.map[this.boyPostion[0]][this.boyPostion[1]] = 'target'
+        }
+        if (this.m[this.boyPostion[0]][this.boyPostion[1]] === 'floor' || this.m[this.boyPostion[0]][this.boyPostion[1]] === 'box') {
+          this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'
+        }
+        this.boyPostion = [nextY, nextX] //更新boy位置
+        this.map[nextY + y][nextX + x] = 'box' //更新box位置
         this.map[nextY][nextX] = 'boy'
         this.boxInTarget = true
         this.target = [nextY + y, nextX + x]
         main.render(this.map)
         return true
       }
-    } else if(destination === 'wall') {  //要走的下一步遇到墙
+    } else if (destination === 'wall') { //要走的下一步遇到墙
       return false
-    } else if(destination === 'floor') {  //要走的下一步是地板
+    } else if (destination === 'floor') { //要走的下一步是地板
       this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'
-      if(this.m[this.boyPostion[0]][this.boyPostion[1]] === 'target') {
+      if (this.m[this.boyPostion[0]][this.boyPostion[1]] === 'target') {
         this.map[this.boyPostion[0]][this.boyPostion[1]] = 'target'
       }
       this.boyPostion = [nextY, nextX]
-      // console.log(this.boyPostion[1], this.boyPostion[0])
-      this.map[nextY][nextX] = 'boy'   //移动boy
-     
-      if(this.inTarget) {
+      this.map[nextY][nextX] = 'boy'
+
+      if (this.inTarget) {
         // this.map[this.target[0]][this.target[1]] = 'target' 
         this.inTarget = false
       }
-     
+
       main.render(this.map)
-      // console.log('是地板，可以走！！')
       return true
-    } else if(destination === 'target') {
+    } else if (destination === 'target') {
       this.map[this.boyPostion[0]][this.boyPostion[1]] = 'floor'
-      if(this.m[this.boyPostion[0]][this.boyPostion[1]] === 'target') {
+      if (this.m[this.boyPostion[0]][this.boyPostion[1]] === 'target') {
         this.map[this.boyPostion[0]][this.boyPostion[1]] = 'target'
       }
       this.boyPostion = [nextY, nextX]
-      this.map[nextY][nextX] = 'boy'  
-      if(this.inTarget && this.map[this.target[0]][this.target[1]] != 'box') {
-        this.map[this.target[0]][this.target[1]] = 'target' 
-      } 
-      
+      this.map[nextY][nextX] = 'boy'
+      if (this.inTarget && this.map[this.target[0]][this.target[1]] != 'box') {
+        this.map[this.target[0]][this.target[1]] = 'target'
+      }
+
       this.inTarget = true
       this.target = [nextY, nextX]
       main.render(this.map)
     }
-   
+
   }
   getBoyPostion(map) {
-    for(let y = 0; y < map.length; y++) {
-      for(let x = 0; x < map[y].length; x++) {
-        if(map[y][x] === 'boy') {
+    for (let y = 0; y < map.length; y++) {
+      for (let x = 0; x < map[y].length; x++) {
+        if (map[y][x] === 'boy') {
           return [y, x]
         }
       }
@@ -114,9 +112,9 @@ class HandleKeyBoard {
   }
   findResultList(map) {
     let result = []
-    for(let y = 0; y < map.length; y++) {
-      for(let x = 0; x < map[y].length; x++) {
-        if(map[y][x] === 'target') {
+    for (let y = 0; y < map.length; y++) {
+      for (let x = 0; x < map[y].length; x++) {
+        if (map[y][x] === 'target') {
           result.push([y, x])
         }
       }
@@ -125,22 +123,27 @@ class HandleKeyBoard {
   }
   judgeSuccess(map) {
     let flag = true
-    for(let i = 0; i < this.resultList.length; i++) {
-      if(map[this.resultList[i][0]][this.resultList[i][1]] !== 'box') {
+    for (let i = 0; i < this.resultList.length; i++) {
+      if (map[this.resultList[i][0]][this.resultList[i][1]] !== 'box') {
         flag = false
       }
     }
-    console.log(flag)
-    if(flag) {
+    if (flag) {
       let timer = setTimeout(() => {
-        console.log('通关啦！！！！')
-        this.m = this.allMap[++this.index]
-        this.map = JSON.parse(JSON.stringify(this.m))
-        this.boyPostion = this.getBoyPostion(this.map)
-        this.resultList = this.findResultList(this.map)
-        main.render(this.map)
-       
-      }, 0)
+        var okay = confirm('恭喜您, 通关啦！');
+        if (okay) {
+          this.nextLevel(++this.level)
+        }
+        
+        clearTimeout(timer)
+      }, 5)
     }
+  }
+  nextLevel(level) {
+    this.m = this.allMap[level]
+    this.map = JSON.parse(JSON.stringify(this.m))
+    this.boyPostion = this.getBoyPostion(this.map)
+    this.resultList = this.findResultList(this.map)
+    main.render(this.map)
   }
 }

@@ -1,8 +1,7 @@
-// 主函数，推箱子的入口
+// 入口函数
 class Main {
   constructor() {
     this.map = new Map().map
-    this.index = 0
     this.utils = new Utils()
     this.container = document.querySelector('.container')
     this.app = document.querySelector('#app')
